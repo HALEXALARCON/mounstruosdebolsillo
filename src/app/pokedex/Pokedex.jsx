@@ -8,7 +8,7 @@ const baseUrl = "https://pokeapi.co/api/v2/pokemon";
 
 // Componente de Paginación con efecto de vidrio opaco y transparencia
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  const maxPageNumbers = 26; // Mostrará un máximo de 26 números de página
+  const maxPageNumbers = 22; // Mostrará un máximo de 22 números de página
   // Calcular el rango de páginas a mostrar
   let startPage = Math.max(1, currentPage - Math.floor(maxPageNumbers / 2));
   let endPage = startPage + maxPageNumbers - 1;
