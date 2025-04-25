@@ -1,17 +1,16 @@
-// import { Navigate, Outlet } from "react-router-dom";
-// import { useName } from "../contexts/NameContext";
+import { Navigate, Outlet } from "react-router-dom";
 
-// function Protected({ children }) {
-//   // Desestructuramos directamente el nombre del estado
-//   const [{ name }] = useName();
+function Protected({ children }) {
+  // Leemos directamente de sessionStorage
+  const storedName = sessionStorage.getItem("trainerName");
 
-//   // Si no hay nombre, redirigimos al Home reemplazando la entrada en el historial
-//   if (!name) {
-//     return <Navigate to="/" replace />;
-//   }
+  // Si no hay nombre guardado, redirigimos al Home (reemplazando el historial)
+  if (!storedName) {
+    return <Navigate to="/" replace />;
+  }
 
-//   // Renderizamos los children si vienen, o el <Outlet /> para rutas anidadas
-//   return children || <Outlet />;
-// }
+  // Si hay nombre, renderizamos los children o el <Outlet/> para rutas anidadas
+  return children || <Outlet />;
+}
 
-// export default Protected;
+export default Protected;
