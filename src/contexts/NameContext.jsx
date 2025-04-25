@@ -1,42 +1,30 @@
-import { createContext, useContext, useReducer } from "react";
+import React, { createContext, useState, useContext } from 'react';
 
-const NameContext = createContext();
-
-export const types = Object.freeze({
-  set_name: "SET_NAME",
-  clear_name: "CLEAR_NAME"
+// Crear el contexto con valores predeterminados seguros
+const NameContext = createContext({
+  name: '',
+  setName: () => {
+    throw new Error('setName debe usarse dentro de NameProvider');
+  },
 });
 
-const initialState = {
-  name: localStorage.getItem("name") || ""
-};
-
-function nameReducer(state, action) {
-  switch (action.type) {
-    case types.set_name:
-      localStorage.setItem("name", action.payload);
-      return {
-        ...state,
-        name: action.payload
-      };
-    case types.clear_name:
-      localStorage.removeItem("name");
-      return {
-        ...state,
-        name: ""
-      };
-    default:
-      return state;
-  }
-}
-
+// Componente proveedor del contexto
 export const NameProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(nameReducer, initialState);
+  const [name, setName] = useState('');
+
   return (
-    <NameContext.Provider value={[state, dispatch]}>
+    <NameContext.Provider value={{ name, setName }}>
       {children}
     </NameContext.Provider>
   );
 };
 
-export const useName = () => useContext(NameContext);
+// Hook personalizado para consumir el contexto
+export const useName = () => {
+  const context = useContext(NameContext);
+  if (!context) {
+    throw new Error('useName debe usarse dentro de NameProvider');
+  }
+  return context;
+};
+
